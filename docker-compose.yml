@@ -33,7 +33,6 @@ services:
       SERVICE_TAGS: dev
     ports:
       - "8004:80"
-      - "443:443"
     volumes:
       - ./:/var/www
       - ./docker-config/nginx/conf.d/:/etc/nginx/conf.d/
