@@ -12,6 +12,15 @@ Here we will document everything required to run BoxBilling on Docker. **TLDR**;
 - Download [BoxBilling latest release](https://github.com/boxbilling/boxbilling/releases/) and while downloading get your license key [here](https://www.boxbilling.com/order)
 - Make a folder named `boxbilling` and extract downloaded BoxBilling into public folder inside
 - Copy `bb-config-sample.php` to `bb-config.php`
+- change `bb-config,php`
+
+```
+from :
+    'url'     => 'http://localhost/',
+to :
+    'url'     => 'http://localhost:8004/',
+```
+
 - Create `.env` file inside public folder and fill with
 
 ```
@@ -51,12 +60,12 @@ Here we will document everything required to run BoxBilling on Docker. **TLDR**;
 - Copy your own boxbilling SQL data to `docker-config/mysql/mysql-seeder.sql` or you can leave it as is
 - Go back to `boxbilling` folder and run `docker compose up -d`
 - First run will a bit long because we are building docker images and seed our initial database. But subsequence run will be fast.
-- Now browse to (http://localhost) to check our BoxBilling app, or to (http://localhost/bb-admin) to enter BoxBilling admin console
+- Now browse to (http://localhost:8004) to check our BoxBilling app, or to (http://localhost:8004/bb-admin) to enter BoxBilling admin console
 - For testing please login using this credentials:
 
 ```
     Email : admin@gmail.com
-    Password : EAW5hEP9nr4Vn3H
+    Password : MyBoxbilling
 ```
 
 ## Side Notes
