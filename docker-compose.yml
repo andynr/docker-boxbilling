@@ -1,0 +1,65 @@
+version: "3"
+services:
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: docker-compose-php-dockerfile
+    image: chialab/php:8.0-fpm
+    container_name: app-boxbilling
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker-config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    build:
+      context: .
+      dockerfile: docker-compose-nginx-dockerfile
+    image: nginx:stable
+    container_name: webserver-boxbilling
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: webserver
+      SERVICE_TAGS: dev
+    ports:
+      - "8004:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker-config/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+
+  #MySQL Service
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: myboxbilling
+      SERVICE_NAME: database
+      SERVICE_TAGS: dev
+    container_name: db-boxbilling
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8306:3306"
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
